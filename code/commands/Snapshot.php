@@ -58,11 +58,17 @@ class Snapshot extends DataExtension {
                 'description' => 'Saves a snapshot to the temp directory of your system.'
             ),
             'load' => array(
-                'description' => 'Loads a snapshot into the local instance. CAUTION: It overwrites the database and all the assets.'
+                'description' => 'Loads a snapshot into the local instance. The "src" parameter specifies the .sspak file to load. CAUTION: It overwrites the database and all the assets.'
             )
         );
     }
 
+    /**
+     * Checks some system conditions and prepares the snapshot commands.
+     * @param null $type Can be "save" or "load"
+     *
+     * @return mixed|string
+     */
     public function handleSnapshot($type = null) {
 
         // Check for UNIX
@@ -116,12 +122,20 @@ class Snapshot extends DataExtension {
         return !empty($return);
     }
 
+    /**
+     * Generates the actual CLI commands.
+     * @param $type
+     *
+     * @return array Fields "command" and "info".
+     */
     private function generateCliCommand($type) {
         $rootFolder = \Director::baseFolder();
-        $command = array('sspak');
+        $command = array();
 
         // Build "save" command
         if ($type === 'save') {
+            $command[] = 'sspak';
+
             $folderName = array_reverse(explode(DIRECTORY_SEPARATOR, $rootFolder))[0];
             $projectName = $GLOBALS['project'];
             $snapshotName = implode('_', array(
@@ -138,9 +152,23 @@ class Snapshot extends DataExtension {
             $info = "The snapshot was saved to \"{$saveLocation}.sspak\".";
         } // Build the "load" command
         elseif ($type === 'load') {
-            // TODO: Implement load command
 
-            $info = "(TODO) The snapshot \"...\" was loaded and the caches had been cleared.";
+            // Check for source
+            if(!isset($_GET['src'])) {
+                die("You need to specify a .sspak file to load as \"src\" parameter (absolute path)." . PHP_EOL);
+            }
+
+            // Remove current assets folder
+            $command[] = 'rm -rf assets;';
+
+            // Build sspak load command
+            $command[] = 'sspak';
+            $src = $_GET['src'];
+            $command[] = "load {$src} {$rootFolder};";
+
+            // Clear caches
+            $command[] = "sake more clear all";
+            $info = "The snapshot \"" . array_reverse(explode(DIRECTORY_SEPARATOR, $src))[0] . "\" was loaded and the caches had been cleared.";
         }
 
         return array(
