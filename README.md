@@ -77,4 +77,4 @@ Installation
  * Run: "alias sake='./framework/sake'" # This can be replaced with similar.
  * Run: "sake dev/build flush=1" # In order to rebuild all the caches.
  * Run: "sake more help"
- * (Unix-only) Run: `curl -sS https://silverstripe.github.io/sspak/install | php -- /usr/local/bin`
+ * (Unix-only) Run: `curl -sS https://silverstripe.github.io/sspak/install | php -- /usr/local/bin`; Auto-installs the `sspak` binaries on Unix system to "/usr/local/bin" when using composer. See "post-install-cmd" script in composer.json.

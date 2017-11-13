@@ -12,5 +12,8 @@
 	"homepage": "https://github.com/superspring/sakemore",
 	"require": {
 		"silverstripe/framework": "~3.0"
+	},
+	"scripts": {
+		"post-install-cmd": "php -r \"if(strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && empty(shell_exec(sprintf('which %s', escapeshellarg('sspak'))))) { copy('https://silverstripe.github.io/sspak/install', 'install'); include('./install'); unlink('./install'); if(is_writable('usr/local/bin')) { rename('./sspak', '/usr/local/bin/sspak'); } else { passthru('sudo mv ./sspak ' . escapeshellarg('/usr/local/bin')); } }\""
 	}
 }
