@@ -43,6 +43,11 @@ Get a list of the commands available
                Password - the new password for this member
     Example: sake more pwd admin new_password
              sake more pwd user@email.com "a new password"
+             
+    snapshot - Generates a snapshot of the current state. A snapshot is a backup of the database and assets in an archive.
+    Arguments: Type - A choice of: save, load
+    Example: sake more snapshot save - Saves a snapshot to the temp directory of your system.
+             sake more snapshot load - Loads a snapshot into the local instance. CAUTION: It overwrites the database and all the assets.
 
 Get direct access to a PHP console - similar to 'php -a' but with tab completion available.
 
@@ -72,3 +77,4 @@ Installation
  * Run: "alias sake='./framework/sake'" # This can be replaced with similar.
  * Run: "sake dev/build flush=1" # In order to rebuild all the caches.
  * Run: "sake more help"
+ * (Unix-only) Run: `curl -sS https://silverstripe.github.io/sspak/install | php -- /usr/local/bin`

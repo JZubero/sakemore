@@ -5,3 +5,4 @@ SilverStripe\Sakemore\Core\More:
     - \SilverStripe\Sakemore\Commands\ConsoleRole
     - \SilverStripe\Sakemore\Commands\FlushCacheRole
     - \SilverStripe\Sakemore\Commands\SQLDump
+    - \SilverStripe\Sakemore\Commands\Snapshot
