@@ -55,12 +55,26 @@ class Snapshot extends DataExtension {
     protected function availableCommands() {
         return array(
             'save' => array(
-                'description' => 'Saves a snapshot to the temp directory of your system.'
+                'description' => 'Saves a snapshot to the temp directory of your system. Use the "--db" flag to save only the database.'
             ),
             'load' => array(
                 'description' => 'Loads a snapshot into the local instance. The "src" parameter specifies the .sspak file to load. CAUTION: It overwrites the database and all the assets.'
             )
         );
+    }
+
+    /**
+     * Checks if a certain command flag is present, e.g. "--db" or "--assets".
+     * @param $flag
+     *
+     * @return bool
+     */
+    private function hasFlag($flag) {
+        $args = array_filter($_GET['args'], function($arg) {
+            return substr($arg, 0, 2) === '--';
+        });
+
+        return in_array("--{$flag}", $args);
     }
 
     /**
@@ -134,8 +148,9 @@ class Snapshot extends DataExtension {
 
         // Build "save" command
         if ($type === 'save') {
-            $command[] = 'sspak';
+            $command[] = 'sspak save';
 
+            // Prepare file name and save location
             $folderName = array_reverse(explode(DIRECTORY_SEPARATOR, $rootFolder))[0];
             $projectName = $GLOBALS['project'];
             $snapshotName = implode('_', array(
@@ -147,7 +162,11 @@ class Snapshot extends DataExtension {
                 sys_get_temp_dir(),
                 $snapshotName
             ));
-            $command[] = "save {$rootFolder} {$saveLocation}.sspak";
+            if($this->hasFlag('db')) {
+                $command[] = '--db';
+            }
+
+            $command[] = "{$rootFolder} {$saveLocation}.sspak";
 
             $info = "The snapshot was saved to \"{$saveLocation}.sspak\".";
         } // Build the "load" command
