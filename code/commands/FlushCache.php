@@ -305,7 +305,7 @@ class FlushCacheRole extends DataExtension {
  *   In MyNewModule.php put: function flushCache_commands(&$commands) { ... }
  *   Commands must follow the format specified in FlushCacheRole::availableCommands.
  */
-class FlushCache extends Object {
+class FlushCache extends SS_Object {
 	public function extendExtension(&$commands) {
 		$this->extend('flushCache_commands', $commands);
 	}
