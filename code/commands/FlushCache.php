@@ -6,7 +6,6 @@ use DataExtension;
 use ReflectionMethod;
 use SS_TemplateManifest;
 use SS_ClassManifest;
-use Object;
 use SSViewer;
 use Zend_Translate;
 use SS_ConfigManifest;
