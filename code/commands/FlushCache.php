@@ -7,6 +7,7 @@ use ReflectionMethod;
 use SS_TemplateManifest;
 use SS_ClassManifest;
 use SSViewer;
+use SS_Object;
 use Zend_Translate;
 use SS_ConfigManifest;
 use Requirements;
